@@ -3479,8 +3479,8 @@ DefinitionBlock ("/Users/dimkas/Documents/dsdt/dsdt.aml", "DSDT", 1, "COMPAQ", "
                     0x00,               // Alignment
                     0x02,               // Length
                     )
-                IRQNoFlags ()
-                    {8}
+//                IRQNoFlags ()
+//                    {8}
             })
         }
     }
