@@ -1136,6 +1136,24 @@ DefinitionBlock ("/Users/dimkas/Documents/dsdt/dsdt.aml", "DSDT", 1, "COMPAQ", "
                 Return (0x03)
             }
 
+            Device (HDEF)
+            {
+                Name (_ADR, 0x001B0000)
+                Name (_PRW, Package (0x02) { 0x0D, 0x05 })
+                Method (_DSM, 4, NotSerialized)
+                {
+                    Store (Package ()
+                    {
+                        "built-in", Buffer (One) { 0x00 }, 
+                        "layout-id", Buffer (0x04) { 0x06, 0x01, 0x00, 0x00 }, 
+                        "device-type", Buffer () { "Realtek ALC262" }, 
+                        "PinConfigurations", Buffer () { 0x00 }
+                    }, Local0)
+                    DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+                    Return (Local0)
+                }
+            }
+            
             Device (PEG1)
             {
                 Name (_ADR, 0x00010000)  // _ADR: Address
