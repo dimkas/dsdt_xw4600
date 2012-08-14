@@ -2173,6 +2173,66 @@ DefinitionBlock ("/Users/dimkas/Documents/dsdt/dsdt.aml", "DSDT", 1, "COMPAQ", "
                 {
                     Return (0x03)
                 }
+                Method (_DSM, 4, NotSerialized)
+                {
+                    Store (Package (0x0f)  // в таком виде в пакете 15 полей
+                    {
+                        // Подстановка чужого DeviceID позволяет драйверу использовать Errata, одинаковые для многих чипсетов
+                        "device-id",
+                        Buffer (0x04)
+                        {
+                            0x36, 0x3a, 0x00, 0x00  //конкретные значения перечислю ниже   - в данном случае DeviceID=0x3a34
+                        },
+                        // Эти свойства инжектируются VoodooUSBEHCI, остальное в том драйвере только мешает
+                        "AAPL,clock-id",
+                        Buffer (One)
+                        {
+                            0x03   // значения должны быть уникальны для каждого устройства (1,2,3...)
+                        },
+
+                        "built-in",
+                        Buffer ()
+                        {
+                            0x00
+                        },
+
+                        "device_type",  // я не уверен, что это надо, но на всякий случай вписал
+                        Buffer (0x05)
+                        {
+                            "UHCI"
+                        },
+
+
+                        // Эта группа свойств найдена в ДСДТ нативных МакБуков. Конкретные значения под вопросом
+                        "AAPL,current-available",
+                        0x04B0,
+                        "AAPL,current-extra",
+                        0x02BC,
+                        "AAPL,current-in-sleep",
+                        0x03E8,
+
+                        Buffer (0x01)
+                        {
+                            0x00
+                        }
+                    }, Local0)
+                    DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+                    Return (Local0)
+                }
+                Device (HUB2)
+                {
+                    Name (_ADR, Zero)
+                    Device (CH20)
+                    {
+                        Name (_ADR, One)
+                    }
+
+                    Device (CH21)
+                    {
+                        Name (_ADR, 0x02)
+                    }
+                }
+
             }
 
             Device (USB4)
@@ -2262,7 +2322,7 @@ DefinitionBlock ("/Users/dimkas/Documents/dsdt/dsdt.aml", "DSDT", 1, "COMPAQ", "
                 }
             }
 
-            Device (EUS1)
+            Device (EHCI)
             {
                 Name (_ADR, 0x001D0007)  // _ADR: Address
                 Method (_PRW, 0, NotSerialized)  // _PRW: Power Resources for Wake
@@ -2291,7 +2351,7 @@ DefinitionBlock ("/Users/dimkas/Documents/dsdt/dsdt.aml", "DSDT", 1, "COMPAQ", "
                 }
             }
 
-            Device (EUS2)
+            Device (EHC2)
             {
                 Name (_ADR, 0x001A0007)  // _ADR: Address
                 Method (_PRW, 0, NotSerialized)  // _PRW: Power Resources for Wake
@@ -3610,8 +3670,8 @@ DefinitionBlock ("/Users/dimkas/Documents/dsdt/dsdt.aml", "DSDT", 1, "COMPAQ", "
             If (EUWK)
             {
                 Notify (\_SB.PBTN, 0x02)
-                Notify (\_SB.PCI0.EUS1, 0x02)
-                Notify (\_SB.PCI0.EUS2, 0x02)
+                Notify (\_SB.PCI0.EHCI, 0x02)
+                Notify (\_SB.PCI0.EHC2, 0x02)
                 Store (Zero, EUWK)
             }
             Else
@@ -5125,7 +5185,7 @@ DefinitionBlock ("/Users/dimkas/Documents/dsdt/dsdt.aml", "DSDT", 1, "COMPAQ", "
         }
     }
 
-    Scope (\_SB.PCI0.EUS1)
+    Scope (\_SB.PCI0.EHCI)
     {
         Method (_S3D, 0, NotSerialized)  // _S3D: S3 Device State
         {
@@ -5133,7 +5193,7 @@ DefinitionBlock ("/Users/dimkas/Documents/dsdt/dsdt.aml", "DSDT", 1, "COMPAQ", "
         }
     }
 
-    Scope (\_SB.PCI0.EUS2)
+    Scope (\_SB.PCI0.EHC2)
     {
         Method (_S3D, 0, NotSerialized)  // _S3D: S3 Device State
         {
