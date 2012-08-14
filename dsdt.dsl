@@ -8881,6 +8881,10 @@ DefinitionBlock ("/Users/dimkas/Documents/dsdt/dsdt.aml", "DSDT", 1, "COMPAQ", "
             Name (_UID, 0x01)  // _UID: Unique ID
             Name (CRES, ResourceTemplate ()
             {
+                IRQNoFlags ()
+                    {0}
+                IRQNoFlags ()
+                    {8}
                 Memory32Fixed (ReadWrite,
                     0x00000000,         // Address Base
                     0x00000000,         // Address Length
