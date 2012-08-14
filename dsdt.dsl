@@ -1998,6 +1998,64 @@ DefinitionBlock ("/Users/dimkas/Documents/dsdt/dsdt.aml", "DSDT", 1, "COMPAQ", "
                 {
                     Return (0x03)
                 }
+
+                Method (_DSM, 4, NotSerialized)
+                {
+                    Store (Package (0x0d)
+                    {
+                        "device-id",
+                        Buffer (0x04)
+                        {
+                            0x30, 0x28, 0x00, 0x00  //конкретные значения перечислю ниже   - в данном случае DeviceID=0x3a34
+                        },
+
+                        "AAPL,clock-id", 
+                        Buffer (One)
+                        {
+                            0x01   
+                        }, 
+
+                        "built-in",
+                        Buffer ()
+                        {
+                            0x00
+                        },
+                        
+                            "device_type",   
+                        Buffer (0x05)
+                        {
+                            "UHCI"
+                        },
+
+                        "AAPL,current-available", 
+                        0x04B0, 
+                        "AAPL,current-extra", 
+                        0x02BC, 
+                        "AAPL,current-in-sleep", 
+                        0x03E8, 
+
+                        Buffer (0x01)
+                        {
+                            0x00
+                        }
+                    }, Local0)
+                    DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+                    Return (Local0)
+                }
+
+                Device (HUB0)
+                {
+                    Name (_ADR, Zero)
+                    Device (CH00)
+                    {
+                        Name (_ADR, One)
+                    }
+
+                    Device (CH01)
+                    {
+                        Name (_ADR, 0x02)
+                    }
+                }
             }
 
             Device (USB2)
