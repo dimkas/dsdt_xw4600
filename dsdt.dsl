@@ -2262,6 +2262,67 @@ DefinitionBlock ("/Users/dimkas/Documents/dsdt/dsdt.aml", "DSDT", 1, "COMPAQ", "
                 {
                     Return (0x03)
                 }
+
+                Method (_DSM, 4, NotSerialized)
+                {
+                    Store (Package (0x0f)  // в таком виде в пакете 15 полей
+                    {
+                        // Подстановка чужого DeviceID позволяет драйверу использовать Errata, одинаковые для многих чипсетов
+                        "device-id",
+                        Buffer (0x04)
+                        {
+                            0x37, 0x3a, 0x00, 0x00  //конкретные значения перечислю ниже   - в данном случае DeviceID=0x3a34
+                        },
+                        // Эти свойства инжектируются VoodooUSBEHCI, остальное в том драйвере только мешает
+                        "AAPL,clock-id",
+                        Buffer (One)
+                        {
+                            0x04   // значения должны быть уникальны для каждого устройства (1,2,3...)
+                        },
+
+                        "built-in",
+                        Buffer ()
+                        {
+                            0x00
+                        },
+
+                        "device_type",  // я не уверен, что это надо, но на всякий случай вписал
+                        Buffer (0x05)
+                        {
+                            "UHCI"
+                        },
+
+
+                        // Эта группа свойств найдена в ДСДТ нативных МакБуков. Конкретные значения под вопросом
+                        "AAPL,current-available",
+                        0x04B0,
+                        "AAPL,current-extra",
+                        0x02BC,
+                        "AAPL,current-in-sleep",
+                        0x03E8,
+
+                        Buffer (0x01)
+                        {
+                            0x00
+                        }
+                    }, Local0)
+                    DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+                    Return (Local0)
+                }
+
+                Device (HUB3)
+                {
+                    Name (_ADR, Zero)
+                    Device (CH30)
+                    {
+                        Name (_ADR, One)
+                    }
+
+                    Device (CH31)
+                    {
+                        Name (_ADR, 0x02)
+                    }
+                }
             }
 
             Device (USB5)
@@ -2290,6 +2351,67 @@ DefinitionBlock ("/Users/dimkas/Documents/dsdt/dsdt.aml", "DSDT", 1, "COMPAQ", "
                 Method (_S5D, 0, NotSerialized)
                 {
                     Return (0x03)
+                }
+
+                Method (_DSM, 4, NotSerialized)
+                {
+                    Store (Package (0x0f)  // в таком виде в пакете 15 полей
+                    {
+                        // Подстановка чужого DeviceID позволяет драйверу использовать Errata, одинаковые для многих чипсетов
+                        "device-id",
+                        Buffer (0x04)
+                        {
+                            0x38, 0x3a, 0x00, 0x00  //конкретные значения перечислю ниже   - в данном случае DeviceID=0x3a34
+                        },
+                        // Эти свойства инжектируются VoodooUSBEHCI, остальное в том драйвере только мешает
+                        "AAPL,clock-id",
+                        Buffer (One)
+                        {
+                            0x05   // значения должны быть уникальны для каждого устройства (1,2,3...)
+                        },
+
+                        "built-in",
+                        Buffer ()
+                        {
+                            0x00
+                        },
+
+                        "device_type",  // я не уверен, что это надо, но на всякий случай вписал
+                        Buffer (0x05)
+                        {
+                            "UHCI"
+                        },
+
+
+                        // Эта группа свойств найдена в ДСДТ нативных МакБуков. Конкретные значения под вопросом
+                        "AAPL,current-available",
+                        0x04B0,
+                        "AAPL,current-extra",
+                        0x02BC,
+                        "AAPL,current-in-sleep",
+                        0x03E8,
+
+                        Buffer (0x01)
+                        {
+                            0x00
+                        }
+                    }, Local0)
+                    DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+                    Return (Local0)
+                }
+
+                Device (HUB4)
+                {
+                    Name (_ADR, Zero)
+                    Device (CH60)
+                    {
+                        Name (_ADR, One)
+                    }
+
+                    Device (CH61)
+                    {
+                        Name (_ADR, 0x02)
+                    }
                 }
             }
 
@@ -2320,6 +2442,67 @@ DefinitionBlock ("/Users/dimkas/Documents/dsdt/dsdt.aml", "DSDT", 1, "COMPAQ", "
                 {
                     Return (0x03)
                 }
+
+                Method (_DSM, 4, NotSerialized)
+                {
+                    Store (Package (0x0f)  // в таком виде в пакете 15 полей
+                    {
+                        // Подстановка чужого DeviceID позволяет драйверу использовать Errata, одинаковые для многих чипсетов
+                        "device-id",
+                        Buffer (0x04)
+                        {
+                            0x39, 0x3a, 0x00, 0x00  //конкретные значения перечислю ниже   - в данном случае DeviceID=0x3a34
+                        },
+                        // Эти свойства инжектируются VoodooUSBEHCI, остальное в том драйвере только мешает
+                        "AAPL,clock-id",
+                        Buffer (One)
+                        {
+                            0x05   // значения должны быть уникальны для каждого устройства (1,2,3...)
+                        },
+
+                        "built-in",
+                        Buffer ()
+                        {
+                            0x00
+                        },
+
+                        "device_type",  // я не уверен, что это надо, но на всякий случай вписал
+                        Buffer (0x05)
+                        {
+                            "UHCI"
+                        },
+
+
+                        // Эта группа свойств найдена в ДСДТ нативных МакБуков. Конкретные значения под вопросом
+                        "AAPL,current-available",
+                        0x04B0,
+                        "AAPL,current-extra",
+                        0x02BC,
+                        "AAPL,current-in-sleep",
+                        0x03E8,
+
+                        Buffer (0x01)
+                        {
+                            0x00
+                        }
+                    }, Local0)
+                    DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+                    Return (Local0)
+                }
+
+                Device (HUB5)
+                {
+                    Name (_ADR, Zero)
+                    Device (CH60)
+                    {
+                        Name (_ADR, One)
+                    }
+
+                    Device (CH61)
+                    {
+                        Name (_ADR, 0x02)
+                    }
+                }
             }
 
             Device (EHCI)
@@ -2348,6 +2531,85 @@ DefinitionBlock ("/Users/dimkas/Documents/dsdt/dsdt.aml", "DSDT", 1, "COMPAQ", "
                 Method (_S5D, 0, NotSerialized)
                 {
                     Return (0x03)
+                }
+
+                Method (_DSM, 4, NotSerialized)
+                {
+                    Store (Package (0x0f)
+                    {
+                        // Подстановка чужого DeviceID позволяет драйверу использовать Errata, одинаковые для многих чипсетов
+                        "device-id",
+                        Buffer (0x04)
+                        {
+                            0x3a, 0x3a, 0x00, 0x00  //конкретные значения перечислю ниже   - в данном случае DeviceID=0x3a34
+                        },
+
+                        "AAPL,clock-id", 
+                        Buffer (One)
+                        {
+                            0x0a   
+                        }, 
+
+                        "built-in",
+                        Buffer ()
+                        {
+                            0x00
+                        },
+
+                        "device_type",   
+                        Buffer (0x05)
+                        {
+                            "EHCI"
+                        },
+                        
+                        "AAPL,current-available", 
+                        0x04B0, 
+                        "AAPL,current-extra", 
+                        0x02BC, 
+                        "AAPL,current-in-sleep", 
+                        0x03E8, 
+
+                        Buffer (0x01)
+                        {
+                            0x00
+                        }
+                    }, Local0)
+                    DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+                    Return (Local0)
+                }
+
+                Device (HUB6)
+                {
+                    Name (_ADR, Zero)
+                    Device (CH00)
+                    {
+                        Name (_ADR, One)
+                    }
+
+                    Device (CH01)
+                    {
+                        Name (_ADR, 0x02)
+                    }
+
+                    Device (CH10)
+                    {
+                        Name (_ADR, 0x03)
+                    }
+
+                    Device (CH11)
+                    {
+                        Name (_ADR, 0x04)
+                    }
+
+                    Device (CH20)
+                    {
+                        Name (_ADR, 0x05)
+                    }
+
+                    Device (CH21)
+                    {
+                        Name (_ADR, 0x06)
+                    }
                 }
             }
 
@@ -2378,6 +2640,75 @@ DefinitionBlock ("/Users/dimkas/Documents/dsdt/dsdt.aml", "DSDT", 1, "COMPAQ", "
                 {
                     Return (0x03)
                 }
+                Method (_DSM, 4, NotSerialized)
+                {
+                    Store (Package (0x0f)
+                    {
+                        // Подстановка чужого DeviceID позволяет драйверу использовать Errata, одинаковые для многих чипсетов
+                        "device-id",
+                        Buffer (0x04)
+                        {
+                            0x3c, 0x3a, 0x00, 0x00  //конкретные значения перечислю ниже   - в данном случае DeviceID=0x3a34
+                        },
+
+                        "AAPL,clock-id", 
+                        Buffer (One)
+                        {
+                            0x0a   
+                        }, 
+
+                        "built-in",
+                        Buffer ()
+                        {
+                            0x00
+                        },
+
+                        "device_type",   
+                        Buffer (0x05)
+                        {
+                            "EHCI"
+                        },
+                        
+                        "AAPL,current-available", 
+                        0x04B0, 
+                        "AAPL,current-extra", 
+                        0x02BC, 
+                        "AAPL,current-in-sleep", 
+                        0x03E8, 
+
+                        Buffer (0x01)
+                        {
+                            0x00
+                        }
+                    }, Local0)
+                    DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+                    Return (Local0)
+                }
+
+                Device (HUB7)
+                {
+                    Name (_ADR, Zero)
+                    Device (CH00)
+                    {
+                        Name (_ADR, One)
+                    }
+
+                    Device (CH01)
+                    {
+                        Name (_ADR, 0x02)
+                    }
+
+                    Device (CH10)
+                    {
+                        Name (_ADR, 0x03)
+                    }
+
+                    Device (CH11)
+                    {
+                        Name (_ADR, 0x04)
+                    }
+                }
+
             }
 
             Method (NATA, 0, NotSerialized)
