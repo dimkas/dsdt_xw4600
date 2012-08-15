@@ -2019,7 +2019,7 @@ DefinitionBlock ("/Users/dimkas/Documents/dsdt/dsdt.aml", "DSDT", 1, "COMPAQ", "
 
                 Method (_DSM, 4, NotSerialized)
                 {
-                    Store (Package (0x0d)
+                    Store (Package ()
                     {
                         "device-id",
                         Buffer (0x04)
