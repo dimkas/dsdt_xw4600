@@ -1271,12 +1271,88 @@ DefinitionBlock ("/Users/dimkas/Documents/dsdt/dsdt.aml", "DSDT", 1, "COMPAQ", "
                     }
                 }
 
-                Device (SLT1)
+                Device (NVID)
                 {
-                    Name (_ADR, 0x00)  // _ADR: Address
+                    Name (_ADR, Zero)  // _ADR: Address
                     Method (_SUN, 0, NotSerialized)  // _SUN: Slot User Number
                     {
                         Return (PEGA)
+                    }
+
+                    Method (_DSM, 4, NotSerialized)  // _DSM: Device-Specific Method
+                    {
+                        Store (Package (0x16)
+                            {
+                                "@0,compatible", 
+                                Buffer (0x0B)
+                                {
+                                    "NVDA,NVMac"
+                                }, 
+
+                                "@0,device_type", 
+                                Buffer (0x08)
+                                {
+                                    "display"
+                                }, 
+
+                                "@0,name", 
+                                Buffer (0x0F)
+                                {
+                                    "NVDA,Display-A"
+                                }, 
+
+                                "@1,compatible", 
+                                Buffer (0x0B)
+                                {
+                                    "NVDA,NVMac"
+                                }, 
+
+                                "@1,device_type", 
+                                Buffer (0x08)
+                                {
+                                    "display"
+                                }, 
+
+                                "@1,name", 
+                                Buffer (0x0F)
+                                {
+                                    "NVDA,Display-B"
+                                }, 
+
+                                "NVCAP", 
+                                Buffer (0x18)
+                                {
+                                    /* 0000 */   0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00,
+                                    /* 0008 */   0x0C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x07,
+                                    /* 0010 */   0x00, 0x00, 0x00, 0x00
+                                }, 
+
+                                "VRAM,totalsize", 
+                                Buffer (0x04)
+                                {
+                                     0x00, 0x00, 0x00, 0x20
+                                }, 
+
+                                "device_type", 
+                                Buffer (0x0C)
+                                {
+                                    "NVDA,Parent"
+                                }, 
+
+                                "model", 
+                                Buffer (0x17)
+                                {
+                                    "nVidia GeForce 9600 GT"
+                                }, 
+
+                                "rom-revision", 
+                                Buffer (0x25)
+                                {
+                                    "nVidia GeForce 9600 GT OpenGL Engine"
+                                }
+                            }, Local0)
+                        DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+                        Return (Local0)
                     }
                 }
             }
@@ -1960,12 +2036,31 @@ DefinitionBlock ("/Users/dimkas/Documents/dsdt/dsdt.aml", "DSDT", 1, "COMPAQ", "
                     }
                 }
 
-                Device (SLT6)
+                Device (BRCM)
                 {
                     Name (_ADR, 0x00)  // _ADR: Address
                     Method (_SUN, 0, NotSerialized)  // _SUN: Slot User Number
                     {
                         Return (PXSF)
+                    }
+                    Method (_DSM, 4, NotSerialized)  // _DSM: Device-Specific Method
+                    {
+                        Store (Package (0x04)
+                            {
+                                "built-in", 
+                                Buffer (One)
+                                {
+                                     0x01
+                                }, 
+
+                                "device_type", 
+                                Buffer (0x09)
+                                {
+                                    "ethernet"
+                                }
+                            }, Local0)
+                        DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+                        Return (Local0)
                     }
                 }
             }
@@ -3958,7 +4053,7 @@ DefinitionBlock ("/Users/dimkas/Documents/dsdt/dsdt.aml", "DSDT", 1, "COMPAQ", "
                             Store (One, \_SB.PCI0.PEG1.PEPS)
                         }
 
-                        Notify (\_SB.PCI0.PEG1.SLT1, 0x02)
+                        Notify (\_SB.PCI0.PEG1.NVID, 0x02)
                     }
                 }
             }
